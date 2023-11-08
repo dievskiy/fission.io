@@ -32,7 +32,29 @@ To try out :
 - Browse to the `samples/hello-py-spec/specs` directory and take a look at the spec of   environment within it.
 - Thanks to PodSpec support in Fission, any feature that's available in Kubernetes pods can be utilized by Fission too. In this case, all we need to do is add a `runtimeClassName` field which will instruct the function to use gVisor.
 
-![gvisor-podspec](/images/gvisor-podspec.png)
+```
+apiVersion: fission.io/v1
+kind: Environment
+metadata:
+  creationTimestamp: null
+  name: python-spec-example
+  namespace: default
+spec:
+  builder:
+    command: build
+    image: fission/python-builder
+  imagepullsecret: ""
+  #allowedFunctionsPerContainer: infinite
+  keeparchive: false
+  poolsize: 1
+  resources: {}
+  containers:
+    image: fission/python-env
+    podspec:
+      runtimeClassName: gvisor
+
+  version: 3
+```
 
 You can now proceed with the usual:
 
